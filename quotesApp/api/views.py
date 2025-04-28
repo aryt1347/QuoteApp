@@ -13,21 +13,24 @@ import requests
 # Wikipedia page the author and insert bio or go to wikipedia link
 def scrape_author_wiki(authorName):
 
-    url = "https://en.wikipedia.org/wiki/" + authorName.replace(" ", "_")
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
-    paragraphs = soup.find_all("p")
-    
-    for p in paragraphs:
-        if p.find("b"):
-            soup = p
-            # Remove all <sup> tags
-            for sup in soup.find_all('sup'):
-                sup.decompose()
+    try:
+        url = "https://en.wikipedia.org/wiki/" + authorName.replace(" ", "_")
+        response = requests.get(url)
+        soup = BeautifulSoup(response.content, 'html.parser')
+        paragraphs = soup.find_all("p")
+        
+        for p in paragraphs:
+            if p.find("b"):
+                soup = p
+                # Remove all <sup> tags
+                for sup in soup.find_all('sup'):
+                    sup.decompose()
 
-            # Get cleaned text
-            cleaned_bio = soup.get_text(strip=True)
-            return cleaned_bio
+                # Get cleaned text
+                cleaned_bio = soup.get_text(strip=True)
+                return cleaned_bio
+    except:
+        return("No info")
 
 def index(request):
     return render(request, "index.html")
@@ -43,6 +46,7 @@ def get_quote(request):
         serializer = QuotesModelSerializer(quote)
         data_with_bio = serializer.data
         data_with_bio["bio"] = bio
+        print(data_with_bio)
         return Response(data_with_bio)
     
     return Response({"content": "N/A", "author": "N/A", "topic": "N/A"})
