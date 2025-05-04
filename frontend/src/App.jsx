@@ -36,7 +36,7 @@ function App() {
       // Set link to author's bio
       let authorLink = "https://en.wikipedia.org/wiki/" + data.author.split(" ").join("_");
       setAuthorLink(authorLink);
-      setShowBio(!showBio);
+      setShowBio(false);
       setLoading(false);
     });
   }
