@@ -27,7 +27,7 @@ def scrape_author_wiki(authorName):
                     sup.decompose()
 
                 # Get cleaned text
-                cleaned_bio = soup.get_text(strip=True)
+                cleaned_bio = soup.get_text()
                 return cleaned_bio
     except:
         return("No info")
